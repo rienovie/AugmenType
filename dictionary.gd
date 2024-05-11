@@ -8,12 +8,12 @@ func populateDict():
 	dict.clear()
 	var sFile : String = FileAccess.get_file_as_string("res://resources/dict.txt")
 	var sBuild : String = ""
-	for char in sFile:
-		if(char == "\n"):
+	for c in sFile:
+		if(c == "\n"):
 			dict.push_back(sBuild)
 			sBuild = ""
 		else:
-			sBuild = sBuild + char
+			sBuild = sBuild + c
 
 func populateDict3():
 	if(dict.size() < 1):
