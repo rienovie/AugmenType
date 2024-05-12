@@ -40,7 +40,7 @@ func deleteLast() -> String:
 			currentError.queue_free()
 			currentUser = mPrevious[currentUser]
 			currentError = mPrevious[currentError]
-			output = currentError.get_child(0).text
+			output = currentError.get_child(1).text
 			currentError.get_child(0).text = ""
 			currentError.get_child(1).text = ""
 			iCount = iCount - 1

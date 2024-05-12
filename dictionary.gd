@@ -4,6 +4,15 @@ extends Node
 var dict : Array
 var dict3 : Array
 
+var mDicts : Dictionary = {
+	"full" : dict ,
+	"three" : dict3
+}
+
+func populateAllDicts():
+	populateDict()
+	populateDict3()
+
 func populateDict():
 	dict.clear()
 	var sFile : String = FileAccess.get_file_as_string("res://resources/dict.txt")
