@@ -9,25 +9,25 @@ extends Node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	feedLine_node.text = ""
-	Dict.populateAllDicts()
 	input_node.grab_focus()
+	
+	var flags = dictFlags.new()
+	flags.countRange = Vector2i(3,5)
+	Dict.buildDict(flags)
+	
 	if(!userLine_node):
 		push_error("UserLine node not defined!")
 	if(!cam_node):
 		push_error("Camera not defined!")
 
-func feedWord(fromDict : String):
-	if(!Dict.mDicts.has(fromDict)):
-		push_error("Could not feed word from Dict: ",fromDict,"! Dict not found!")
-		return
-	var randWord : String = Dict.mDicts[fromDict].pick_random()
-	feedLine_node.text = feedLine_node.text + randWord + " "
+func feedWord():
+	feedLine_node.text = feedLine_node.text + Dict.dictBuilt.pick_random() + " "
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	updateCamLoc()
 	if(feedLine_node.text.length() < iMaxCharCount):
-		feedWord("three")
+		feedWord()
 	pass
 
 func updateCamLoc():
