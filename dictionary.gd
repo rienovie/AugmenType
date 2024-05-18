@@ -17,10 +17,10 @@ var dictBuilt : Array # use this for the game
 func _ready() -> void:
 	populateAllDicts()
 
-func buildDict(flags : dictFlags) :
+func buildDict(_flags : dictFlags) :
 	dictBuilt.clear()
 	
-	dictBuilt = dict3 + dict4 + dict5 + dict6 + dict7
+	dictBuilt = dict3 + dict4 + dict5 + dict6
 
 func populateAllDicts():
 	populateDict()

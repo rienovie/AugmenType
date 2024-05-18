@@ -21,7 +21,7 @@ func _ready() -> void:
 		push_error("Camera not defined!")
 
 func feedWord():
-	feedLine_node.text = feedLine_node.text + Dict.dictBuilt.pick_random() + " "
+	feedLine_node.text = feedLine_node.text + DictCS.RandomWord() + " "
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
