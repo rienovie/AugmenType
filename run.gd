@@ -11,9 +11,7 @@ func _ready() -> void:
 	feedLine_node.text = ""
 	input_node.grab_focus()
 	
-	var flags = dictFlags.new()
-	flags.countRange = Vector2i(3,5)
-	Dict.buildDict(flags)
+	DictCS.BuildGameDict(Vector2i(3,6),0,true)
 	
 	if(!userLine_node):
 		push_error("UserLine node not defined!")

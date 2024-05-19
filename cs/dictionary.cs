@@ -94,7 +94,7 @@ public partial class dictionary : Node
             bAlternating = true;
 
             //for each char in line
-            for(int i = 0; i > line.Length; i++)
+            for(int i = 0; i < line.Length; i++)
             {
                 //TODO improve this by skipping if already set
                 if(i != 0)
@@ -111,16 +111,16 @@ public partial class dictionary : Node
                         bDouble = true;
                     }
 
-                    //checks if not Single Hand
-                    if(!(leftChars.Contains(line[i]) && leftChars.Contains(line[i-1])))
-                    {
-                        bLeftHand = false;
-                    }
-                    
-                    if(!(rightChars.Contains(line[i]) && rightChars.Contains(line[i-1])))
-                    {
-                        bRightHand = false;
-                    }
+                }
+                //checks if not Single Hand
+                if(leftChars.Contains(line[i]))
+                {
+                    bRightHand = false;
+                }
+                
+                if(rightChars.Contains(line[i]))
+                {
+                    bLeftHand = false;
                 }
             }
 
@@ -137,7 +137,7 @@ public partial class dictionary : Node
         return mainDict.ToArray();
     }
 
-    public void BuildGameDict(Vector2I range, ECharRestriction restrict, bool onlyDoubles = false)
+    public void BuildGameDict(Vector2I range, int restrict, bool onlyDoubles)
     {
         gameDict.Clear();
 
@@ -145,7 +145,7 @@ public partial class dictionary : Node
         HashSet<string> buildSet = new();
         
         //populate workingSets
-        for(int i = range.X; i > range.Y + 1; i++)
+        for(int i = range.X; i < range.Y + 1; i++)
         {
             switch (i)
             {
@@ -178,12 +178,13 @@ public partial class dictionary : Node
 
         foreach(HashSet<string> curSet in workingSets)
         {
-            switch (restrict)
+            buildSet.Clear();
+            
+            switch ((ECharRestriction)restrict)
             {  
                 case ECharRestriction.None:
                     if(onlyDoubles)
                     {
-                        buildSet.Clear();
                         buildSet.UnionWith(curSet);
                         buildSet.IntersectWith(doubleDict);
                         gameDict.UnionWith(buildSet);
@@ -194,13 +195,11 @@ public partial class dictionary : Node
                     }
                     break;
                 case ECharRestriction.Alternating:
-                    buildSet.Clear();
                     buildSet.UnionWith(curSet);
                     buildSet.IntersectWith(alternatingDict);
                     gameDict.UnionWith(buildSet);
                     break;
                 case ECharRestriction.LeftOnly:
-                    buildSet.Clear();
                     if(onlyDoubles)
                     {
                         buildSet.UnionWith(curSet);
@@ -216,7 +215,6 @@ public partial class dictionary : Node
                     }
                     break;
                 case ECharRestriction.RightOnly:
-                    buildSet.Clear();
                     if(onlyDoubles)
                     {
                         buildSet.UnionWith(curSet);
@@ -236,11 +234,13 @@ public partial class dictionary : Node
                     break;
             }
         }
+        GD.Print("Dicts Populated!");
     }
 
     public string RandomWord()
     {
-        return mainDict.ElementAt(rand.Next(mainDict.Count));
+        if(gameDict.Count == 0) {return "";}
+        return gameDict.ElementAt(rand.Next(gameDict.Count));
     }
 
 }
