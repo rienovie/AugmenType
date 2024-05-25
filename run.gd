@@ -8,10 +8,11 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	G.scoreTimerCalled.connect(processScore)
 	feedLine_node.text = ""
 	input_node.grab_focus()
 	
-	DictCS.BuildGameDict(Vector2i(3,6),0,true)
+	DictCS.BuildGameDict(Vector2i(3,6),1,false)
 	
 	if(!userLine_node):
 		push_error("UserLine node not defined!")
@@ -21,12 +22,14 @@ func _ready() -> void:
 func feedWord():
 	feedLine_node.text = feedLine_node.text + DictCS.RandomWord() + " "
 
+func processScore():
+	G.addScore(userLine_node.calculateScore())
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	updateCamLoc()
 	if(feedLine_node.text.length() < iMaxCharCount):
 		feedWord()
-	pass
 
 func updateCamLoc():
 	cam_node.transform.origin = Vector2(userLine_node.size.x,0)

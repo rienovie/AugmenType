@@ -46,12 +46,19 @@ public partial class dictionary : Node
         'h', 'j', 'k', 'l',
         'n', 'm'
     };
+
+    public struct DictParameters {
+        public Vector2I range;
+        public int restrict;
+        public bool onlyDoubles;
+    }
+
+    public DictParameters currentDictParams = new();
     
     public override void _Ready()
     {
         base._Ready();
         PopulateDicts();
-        
     }
 
     private void PopulateDicts()
@@ -137,9 +144,24 @@ public partial class dictionary : Node
         return mainDict.ToArray();
     }
 
+    public Vector2I GetCurrentDictRange() {
+        return currentDictParams.range;
+    }
+
+    public int GetCurrentDictRestrict() {
+        return currentDictParams.restrict;
+    }
+
+    public bool GetCurrentDictDoubles() {
+        return currentDictParams.onlyDoubles;
+    }
+
     public void BuildGameDict(Vector2I range, int restrict, bool onlyDoubles)
     {
         gameDict.Clear();
+        currentDictParams.range = range;
+        currentDictParams.restrict = restrict;
+        currentDictParams.onlyDoubles = onlyDoubles;
 
         HashSet<HashSet<string>> workingSets = new();
         HashSet<string> buildSet = new();

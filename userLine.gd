@@ -50,6 +50,10 @@ func deleteLast() -> String:
 		iCount = iCount - 1
 	return output
 
+func calculateScore() -> int :
+	#TODO
+	return randi_range(20,50)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for child in root.get_children():
