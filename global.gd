@@ -13,6 +13,8 @@ const bgColorMod : float = 0.5
 
 var scores : Array
 
+var bFin : bool
+
 func addScore(scoreToAdd : int):
 	scores.push_back(scoreToAdd)
 	emit_signal("score",scoreToAdd)

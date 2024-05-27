@@ -65,6 +65,7 @@ func callTimerSignal() :
 
 func _process(_delta: float) -> void:
 	pBarTimer.value = mainTimer.time_left
+	lblLastValue.text = str(G.bFin)
 
 func _on_btn_settings_pressed() -> void:
 	if(!panelSettings):

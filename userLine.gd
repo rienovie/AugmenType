@@ -14,12 +14,12 @@ var currentError : Control
 
 func addCorrect(toAdd : String) -> void:
 	currentUser.text = currentUser.text + toAdd
-	iCount = iCount + 1
+	iCount += 1
 
 func addError(toAdd : String, expected : String) -> void:
 	currentError.get_child(0).text = toAdd
 	currentError.get_child(1).text = expected
-	iCount = iCount + 1
+	iCount += 1
 	
 	var nUser = tUser.instantiate()
 	root.add_child(nUser)
@@ -43,16 +43,27 @@ func deleteLast() -> String:
 			output = currentError.get_child(1).text
 			currentError.get_child(0).text = ""
 			currentError.get_child(1).text = ""
-			iCount = iCount - 1
+			iCount -= 1
 	else:
 		output = currentUser.text.right(1)
 		currentUser.text = currentUser.text.left(-1)
-		iCount = iCount - 1
+		iCount -= 1
 	return output
 
-func calculateScore() -> int :
+func calculateScore(currentWordFinished : bool) -> int :
 	#TODO
 	return randi_range(20,50)
+
+func getLastChar(bGetCorrect : bool = false) -> String:
+	if(iCount == 0):
+		return " "
+	if(currentUser.text.length() == 0):
+		if(bGetCorrect):
+			return mPrevious[currentError].get_child(1).text[0]
+		else:
+			return mPrevious[currentError].get_child(0).text[0]
+	else:
+		return currentUser.text.right(1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
