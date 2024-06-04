@@ -9,27 +9,22 @@ var tError = preload("res://scenes/error_template.tscn")
 
 var mPrevious : Dictionary = {}
 
-var currentUser : Control
-var currentError : Control
+var currentUser : Control = null
+var currentError : Control = null
 
 func addCorrect(toAdd : String) -> void:
 	currentUser.text = currentUser.text + toAdd
 	iCount += 1
 
 func addError(toAdd : String, expected : String) -> void:
-	currentError.get_child(0).text = toAdd
+	if(toAdd == " "):
+		currentError.get_child(0).text = "_"
+	else:
+		currentError.get_child(0).text = toAdd
 	currentError.get_child(1).text = expected
 	iCount += 1
 	
-	var nUser = tUser.instantiate()
-	root.add_child(nUser)
-	mPrevious[nUser] = currentUser
-	currentUser = nUser
-	
-	var nError = tError.instantiate()
-	root.add_child(nError)
-	mPrevious[nError] = currentError
-	currentError = nError
+	addUserAndError()
 	
 
 func deleteLast() -> String:
@@ -50,9 +45,43 @@ func deleteLast() -> String:
 		iCount -= 1
 	return output
 
-func calculateScore(currentWordFinished : bool) -> int :
-	#TODO
-	return randi_range(20,50)
+func calculateScore() -> int :
+	var scoreSum : int = 0
+	var tempString : String = ""
+
+	var bFirstDone : bool = false
+	var contRef : Control = currentUser
+	while(contRef):
+		scoreSum += DictCS.GetWordCountFromString(contRef.text)
+		contRef = mPrevious[contRef]
+		if(!bFirstDone):
+			if(!G.bFinCurWord):
+				var nextChar : String = getLastChar(true)
+				while(nextChar != " "):
+					#TODO change to account for errors
+					tempString = getLastChar(true) + tempString
+					deleteLast()
+					nextChar = getLastChar(true)
+			bFirstDone = true
+		currentUser.queue_free()
+		currentUser = contRef
+	
+	contRef = currentError
+	while(contRef):
+		contRef = mPrevious[contRef]
+		currentError.queue_free()
+		currentError = contRef
+		if(contRef):
+			scoreSum -= G.errorPoints
+	
+	addUserAndError(true)
+	currentUser.text = tempString
+	iCount = tempString.length()
+
+	# wpm conversion assumes 15 sec timer
+	scoreSum *= 4
+
+	return scoreSum
 
 func getLastChar(bGetCorrect : bool = false) -> String:
 	if(iCount == 0):
@@ -65,22 +94,23 @@ func getLastChar(bGetCorrect : bool = false) -> String:
 	else:
 		return currentUser.text.right(1)
 
-# Called when the node enters the scene tree for the first time.
+func addUserAndError(bInitialize : bool = false) -> void:
+	if(bInitialize):
+		for child in root.get_children():
+			child.queue_free()
+		mPrevious.clear()
+		currentError = null
+		currentUser = null
+	
+	var nUser = tUser.instantiate()
+	root.add_child(nUser)
+	mPrevious[nUser] = currentUser
+	currentUser = nUser
+	
+	var nError = tError.instantiate()
+	root.add_child(nError)
+	mPrevious[nError] = currentError
+	currentError = nError
+
 func _ready() -> void:
-	for child in root.get_children():
-		child.queue_free()
-	
-	var newUser = tUser.instantiate()
-	root.add_child(newUser)
-	currentUser = newUser
-	mPrevious[newUser] = null
-	
-	var newError = tError.instantiate()
-	root.add_child(newError)
-	currentError = newError
-	mPrevious[newError] = null
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+	addUserAndError(true)

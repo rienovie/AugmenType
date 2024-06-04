@@ -47,6 +47,17 @@ public partial class dictionary : Node
         'n', 'm'
     };
 
+    public HashSet<char> invalidChars = new()
+    {
+        '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+',
+        '[', ']', '{', '}', '\\', '|', ';', ':', '\'', '\"', ',', '.', '/', '<',
+        '>', '?', '~', '`', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    };
+
+    public bool isValidChar(string newText) {
+        return invalidChars.Contains(newText[0]);
+    }
+
     public struct DictParameters {
         public Vector2I range;
         public int restrict;
@@ -263,6 +274,17 @@ public partial class dictionary : Node
     {
         if(gameDict.Count == 0) {return "";}
         return gameDict.ElementAt(rand.Next(gameDict.Count));
+    }
+
+    public int GetWordCountFromString(string line)
+    {
+        int output = 0;
+        string[] splitLine = line.Split(' ');
+        foreach(string word in splitLine)
+        {
+            if(mainDict.Contains(word)) { output++; }
+        }
+        return output;
     }
 
 }

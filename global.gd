@@ -12,8 +12,8 @@ var mainColor : Color = Color(0,0.6,0.8,1):
 const bgColorMod : float = 0.5
 
 var scores : Array
-
-var bFin : bool
+var errorPoints : int = 5
+var bFinCurWord : bool = true
 
 func addScore(scoreToAdd : int):
 	scores.push_back(scoreToAdd)
