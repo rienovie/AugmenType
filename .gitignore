@@ -1,0 +1,4 @@
+/cpp/GDExtensionTemplate/*
+
+!/cpp/GDExtensionTemplate/src
+/cpp/GDExtensionTemplate/src/CMakeLists.txt
