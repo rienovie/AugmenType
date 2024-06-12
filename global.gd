@@ -4,13 +4,13 @@ signal colorUpdated(newColor : Color)
 signal score(value : int)
 signal scoreTimerCalled()
 
-var test = Example.new()
+var Dict = AugmenDict.new()
 
 var mainColor : Color = Color(0,0.6,0.8,1):
 	set(value):
 		mainColor = value
 		emit_signal("colorUpdated",value)
-		print(test.test_dictionary())
+		Dict.AugTestPrint("Hi")
 
 const bgColorMod : float = 0.5
 

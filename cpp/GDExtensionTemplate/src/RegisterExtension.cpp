@@ -1,5 +1,6 @@
 // Copied from godot-cpp/test/src and modified.
 
+#include "dict.h"
 #include "gdextension_interface.h"
 
 #include "godot_cpp/core/class_db.hpp"
@@ -33,6 +34,10 @@ namespace
         godot::ClassDB::register_abstract_class<ExampleAbstract>();
 
         godot::ClassDB::register_class<GDExtensionTemplate>();
+
+        //Add your stuff here
+        godot::ClassDB::register_class<godot::AugmenDict>();
+
     }
 
     /// @brief Called by Godot to let us do any cleanup.
