@@ -2,6 +2,8 @@
 
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/wrapped.hpp>
+#include <godot_cpp/core/binder_common.hpp>
+#include <godot_cpp/variant/vector2i.hpp>
 #include <unordered_set>
 
 namespace godot {
@@ -12,8 +14,22 @@ namespace godot {
     public:
         AugmenDict();
         ~AugmenDict();
+
+        enum charRestriction {
+            None,
+            Alternating,
+            LeftOnly,
+            RightOnly
+        };
+
+        struct dictParams {
+            godot::Vector2i range;
+            charRestriction restriction;
+            bool bOnlyDoubles;
+        };
         
         void testFunc(godot::String toPrint);
+        bool isValidChar(godot::String toCheck);
 
     private:
         std::unordered_set<char> leftChars = {
@@ -54,3 +70,5 @@ namespace godot {
     };
     
 }
+
+VARIANT_ENUM_CAST(AugmenDict::charRestriction);

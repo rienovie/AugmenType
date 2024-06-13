@@ -11,6 +11,8 @@ var mainColor : Color = Color(0,0.6,0.8,1):
 		mainColor = value
 		emit_signal("colorUpdated",value)
 		Dict.AugTestPrint("Hi")
+		print(Dict.isValidChar('g'))
+		print(Dict.isValidChar('$'))
 
 const bgColorMod : float = 0.5
 
