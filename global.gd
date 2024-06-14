@@ -13,6 +13,7 @@ var mainColor : Color = Color(0,0.6,0.8,1):
 		Dict.AugTestPrint("Hi")
 		print(Dict.isValidChar('g'))
 		print(Dict.isValidChar('$'))
+		
 
 const bgColorMod : float = 0.5
 

@@ -3,6 +3,9 @@
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/wrapped.hpp>
 #include <godot_cpp/core/binder_common.hpp>
+#include <godot_cpp/templates/list.hpp>
+#include <godot_cpp/variant/array.hpp>
+#include <godot_cpp/variant/rid.hpp>
 #include <godot_cpp/variant/vector2i.hpp>
 #include <unordered_set>
 
@@ -30,6 +33,12 @@ namespace godot {
         
         void testFunc(godot::String toPrint);
         bool isValidChar(godot::String toCheck);
+        godot::String getRandomWord();
+        godot::Vector2i getCurrentDictRange();
+        charRestriction getCurrentDictRestrict();
+        bool getCurrentDictDoubles();
+        int getWordCountFromString(godot::String line);
+        void buildGameDict(charRestriction restrict,godot::Vector2i range, bool onlyDoubles = false);
 
     private:
         std::unordered_set<char> leftChars = {
@@ -51,7 +60,7 @@ namespace godot {
             '4', '5', '6', '7', '8', '9'
         };
 
-        std::unordered_set<std::string>
+        godot::List<godot::String>
             mainDict,
             altDict,
             doubleDict,
@@ -63,8 +72,12 @@ namespace godot {
             dict6,
             dict7,
             dict8,
-            dictLarge,
-            dictGame;
+            dictLarge;
+    
+        dictParams currentDictParams;
+
+        std::vector<godot::String> gameDict;
+        void populateDicts();
     protected:
         static void _bind_methods();
     };
