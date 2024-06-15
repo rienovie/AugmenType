@@ -27,13 +27,13 @@ namespace
             return;
         }
 
-        godot::ClassDB::register_class<ExampleRef>();
-        godot::ClassDB::register_class<ExampleMin>();
-        godot::ClassDB::register_class<Example>();
-        godot::ClassDB::register_class<ExampleVirtual>( true );
-        godot::ClassDB::register_abstract_class<ExampleAbstract>();
+        //godot::ClassDB::register_class<ExampleRef>();
+        //godot::ClassDB::register_class<ExampleMin>();
+        //godot::ClassDB::register_class<Example>();
+        //godot::ClassDB::register_class<ExampleVirtual>( true );
+        //godot::ClassDB::register_abstract_class<ExampleAbstract>();
 
-        godot::ClassDB::register_class<GDExtensionTemplate>();
+        //godot::ClassDB::register_class<GDExtensionTemplate>();
 
         //Add your stuff here
         godot::ClassDB::register_class<godot::AugmenDict>();

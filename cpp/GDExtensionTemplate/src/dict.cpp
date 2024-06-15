@@ -30,6 +30,8 @@ void AugmenDict::_bind_methods() {
 
     godot::ClassDB::bind_method(godot::D_METHOD("getWordCountFromString","line"), &AugmenDict::getWordCountFromString);
 
+    godot::ClassDB::bind_method(godot::D_METHOD("buildGameDict","restrict","range","onlyDoubles"), &AugmenDict::buildGameDict);
+
 }
 
 AugmenDict::AugmenDict() {
@@ -140,5 +142,67 @@ void AugmenDict::buildGameDict(AugmenDict::charRestriction restrict, godot::Vect
     currentDictParams.bOnlyDoubles = onlyDoubles;
     currentDictParams.restriction = restrict;
     
-    //TODO working here
+    godot::List<godot::String>* curDict;
+
+    for (int i = range.x; i < range.y +1; i++) {
+        switch(i) {
+            case 3:
+                curDict = &dict3;
+                break;
+            case 4:
+                curDict = &dict4;
+                break;
+            case 5:
+                curDict = &dict5;
+                break;
+            case 6:
+                curDict = &dict6;
+                break;
+            case 7:
+                curDict = &dict7;
+                break;
+            case 8:
+                curDict = &dict8;
+                break;
+            case 9:
+                curDict = &dictLarge;
+                break;
+            default:
+                godot::UtilityFunctions::push_error("range invalid value of: ",i);
+                continue;
+        }
+
+        for (auto word : *curDict) {
+            switch(restrict) {
+                case None:
+                    gameDict.push_back(word);
+                    break;
+                case Alternating:
+                    if(altDict.find(word)) gameDict.push_back(word);
+                    break;
+                case LeftOnly:
+                    if(onlyDoubles) {
+                        if(doubleDict.find(word) && leftHandDict.find(word)) {
+                            gameDict.push_back(word);
+                        }
+                    }
+                    else if(leftHandDict.find(word)) gameDict.push_back(word);
+                    break;
+                case RightOnly:
+                    if(onlyDoubles) {
+                        if(doubleDict.find(word) && rightHandDict.find(word)) {
+                            gameDict.push_back(word);
+                        }
+                    }
+                    else if(rightHandDict.find(word)) gameDict.push_back(word);
+                    break;
+                default:
+                    godot::UtilityFunctions::push_error("Restrict error!");
+                    break;
+
+            }
+        }
+    }
+
+    godot::UtilityFunctions::print("Cpp Dicts Populated!");
 }

@@ -47,10 +47,10 @@ func _ready() -> void:
 	if(!mainTimer):
 		push_error("Timer not set in HUD!")
 
-	sldMinCount.value = DictCS.GetCurrentDictRange().x
-	sldMaxCount.value = DictCS.GetCurrentDictRange().y
-	comBxRestrictions.selected = DictCS.GetCurrentDictRestrict();
-	chkBxDoubles.button_pressed = DictCS.GetCurrentDictDoubles();
+	sldMinCount.value = G.Dict.getCurrentDictRange().x
+	sldMaxCount.value = G.Dict.getCurrentDictRange().y
+	comBxRestrictions.selected = G.Dict.getCurrentDictRestrict();
+	chkBxDoubles.button_pressed = G.Dict.getCurrentDictDoubles();
 
 	if(comBxRestrictions.selected != 0):
 		chkBxDoubles.visible = false
@@ -110,8 +110,9 @@ func updateScoreTxt(value : int):
 	lblAvgValue.text = str(roundi(avg / G.scores.size()))
 
 func updateDict():
-	DictCS.BuildGameDict(Vector2(sldMinCount.value,sldMaxCount.value),
-		comBxRestrictions.selected,chkBxDoubles.button_pressed)
+	G.Dict.buildGameDict(comBxRestrictions.selected,
+		Vector2(sldMinCount.value,sldMaxCount.value),
+		chkBxDoubles.button_pressed)
 
 func _on_sld_min_count_drag_ended(value_changed:bool) -> void:
 	if(!value_changed):

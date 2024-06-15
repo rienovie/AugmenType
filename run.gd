@@ -16,7 +16,7 @@ func _ready() -> void:
 	feedLine_node.text = ""
 	input_node.grab_focus()
 	
-	DictCS.BuildGameDict(Vector2i(3,6),1,false)
+	G.Dict.buildGameDict(G.Dict.Alternating,Vector2i(3,6),false)
 	
 	if(!userLine_node):
 		push_error("UserLine node not defined!")
@@ -24,7 +24,7 @@ func _ready() -> void:
 		push_error("Camera not defined!")
 
 func feedWord():
-	feedLine_node.text = feedLine_node.text + DictCS.RandomWord() + " "
+	feedLine_node.text = feedLine_node.text + G.Dict.getRandomWord() + " "
 
 func processScore():
 	G.addScore(userLine_node.calculateScore())
@@ -52,7 +52,7 @@ func _on_input_text_changed(new_text: String) -> void:
 	#TODO this just removes any extra, should instead queue it
 	if(new_text.length() > 1):
 		new_text = new_text[0]
-	if(DictCS.isValidChar(new_text)):
+	if(G.Dict.isValidChar(new_text)):
 		input_node.clear()
 		return
 	if(feedLine_node.text.begins_with(new_text)):

@@ -53,7 +53,6 @@ func calculateScore() -> int :
 	var contRef : Control = currentUser
 	while(contRef):
 		scoreSum += G.Dict.getWordCountFromString(contRef.text);
-		#scoreSum += DictCS.GetWordCountFromString(contRef.text)
 		contRef = mPrevious[contRef]
 		if(!bFirstDone):
 			if(!G.bFinCurWord):

@@ -73,10 +73,10 @@ namespace godot {
             dict7,
             dict8,
             dictLarge;
-    
+     
         dictParams currentDictParams;
-
         std::vector<godot::String> gameDict;
+
         void populateDicts();
     protected:
         static void _bind_methods();
