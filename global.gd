@@ -2,7 +2,8 @@ extends Node
 
 signal colorUpdated(newColor : Color)
 signal score(value : int)
-signal scoreTimerCalled()
+signal scoreTimerCalled(bThrowaway : bool)
+signal inputGiven()
 
 var Dict = AugmenDict.new()
 
@@ -10,9 +11,6 @@ var mainColor : Color = Color(0,0.6,0.8,1):
 	set(value):
 		mainColor = value
 		emit_signal("colorUpdated",value)
-		Dict.AugTestPrint("Hi")
-		print(Dict.isValidChar('g'))
-		print(Dict.isValidChar('$'))
 		
 
 const bgColorMod : float = 0.5

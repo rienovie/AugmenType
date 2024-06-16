@@ -5,10 +5,17 @@ extends Node
 @export var cam_node : Camera2D
 @export var feedLine_node : Label
 @export var iMaxCharCount : int = 30
-@export var bFinishedCurrentWord : bool = true :
+@export var iCamSpeed : int = 5
+
+var bFinishedCurrentWord : bool = true :
 	set(value):
 		bFinishedCurrentWord = value
 		G.bFinCurWord = value
+
+var bTeleportCam : bool = false
+var bStartedDelta : bool = false
+var fCamDeltaAdd : float
+var fCamDeltaTarget : float = 0.25
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,19 +30,42 @@ func _ready() -> void:
 	if(!cam_node):
 		push_error("Camera not defined!")
 
+	cam_node.position_smoothing_speed = iCamSpeed
+
 func feedWord():
 	feedLine_node.text = feedLine_node.text + G.Dict.getRandomWord() + " "
 
-func processScore():
-	G.addScore(userLine_node.calculateScore())
+func processScore(bThrowaway : bool = false) :
+	bTeleportCam = true
+	if(bThrowaway):
+		userLine_node.calculateScore()
+	else:
+		G.addScore(userLine_node.calculateScore())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	updateCamLoc()
+func _process(delta: float) -> void:
+	updateCamLoc(delta)
 	if(feedLine_node.text.length() < iMaxCharCount):
 		feedWord()
 
-func updateCamLoc():
+func updateCamLoc(delta : float):
+	if(bTeleportCam):
+		
+		fCamDeltaAdd += delta
+		print(fCamDeltaAdd) #debug to see how quick the value goes up
+		
+		if(!bStartedDelta):
+			cam_node.position_smoothing_enabled = false
+			cam_node.position_smoothing_speed = 100
+			bStartedDelta = true
+		elif(fCamDeltaAdd >= fCamDeltaTarget):
+			cam_node.position_smoothing_speed = iCamSpeed
+			cam_node.position_smoothing_enabled = true
+			bTeleportCam = false
+			bStartedDelta = false
+		else:
+			cam_node.position_smoothing_speed = lerp(100,iCamSpeed,fCamDeltaAdd/fCamDeltaTarget)
+
 	cam_node.transform.origin = Vector2(userLine_node.size.x,0)
 
 func setCurrentWordFinishedStatus():
@@ -62,6 +92,7 @@ func _on_input_text_changed(new_text: String) -> void:
 	feedLine_node.text = feedLine_node.text.right(-1)
 	input_node.clear()
 	setCurrentWordFinishedStatus()
+	G.inputGiven.emit()
 
 func _on_input_gui_input(event: InputEvent) -> void:
 	if(userLine_node.iCount == 0):
@@ -69,3 +100,4 @@ func _on_input_gui_input(event: InputEvent) -> void:
 	if(event.is_action_pressed("Delete")):
 		feedLine_node.text = userLine_node.deleteLast() + feedLine_node.text
 		setCurrentWordFinishedStatus()
+		G.inputGiven.emit()

@@ -13,6 +13,9 @@ extends Node
 @export var lblLastValue : Label
 @export var pBarTimer : ProgressBar
 @export var mainTimer : Timer
+@export var quickTimer : Timer
+@export var pBarQTimeTop : ProgressBar
+@export var pBarQTimeBottom : ProgressBar
 
 var bSettingsPanelOpen : bool = false
 
@@ -46,6 +49,12 @@ func _ready() -> void:
 		push_error("PBar Timer not set in HUD!")
 	if(!mainTimer):
 		push_error("Timer not set in HUD!")
+	if(!quickTimer):
+		push_error("QTimer not set in HUD!")
+	if(!pBarQTimeBottom):
+		push_error("pBarQTimeBottom not set in HUD!")
+	if(!pBarQTimeTop):
+		push_error("pBarQTimeTop not set in HUD!")
 
 	sldMinCount.value = G.Dict.getCurrentDictRange().x
 	sldMaxCount.value = G.Dict.getCurrentDictRange().y
@@ -57,14 +66,26 @@ func _ready() -> void:
 	else:
 		chkBxDoubles.visible = true
 	
-	mainTimer.start()
 	mainTimer.connect("timeout",callTimerSignal)
+	quickTimer.connect("timeout",callQTimerSignal)
+	G.inputGiven.connect(inputGiven)
 
 func callTimerSignal() :
 	G.scoreTimerCalled.emit()
 
+func callQTimerSignal() :
+	G.scoreTimerCalled.emit(true)
+	mainTimer.stop()
+
+func inputGiven():
+	quickTimer.start()
+	if(mainTimer.is_stopped()):
+		mainTimer.start()
+
 func _process(_delta: float) -> void:
 	pBarTimer.value = mainTimer.time_left
+	pBarQTimeTop.value = quickTimer.time_left
+	pBarQTimeBottom.value = quickTimer.time_left
 
 func _on_btn_settings_pressed() -> void:
 	if(!panelSettings):

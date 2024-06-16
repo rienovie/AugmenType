@@ -1,5 +1,6 @@
 #include "dict.h"
 #include "Util/util.hpp"
+#include <cstddef>
 #include <cstdlib>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/core/class_db.hpp>
@@ -36,6 +37,7 @@ void AugmenDict::_bind_methods() {
 
 AugmenDict::AugmenDict() {
     populateDicts();
+    srand(time(NULL));
 }
 AugmenDict::~AugmenDict() { }
 
@@ -68,7 +70,6 @@ int AugmenDict::getWordCountFromString(godot::String line) {
     int output = 0;
     godot::PackedStringArray words = line.split(" ");
     for(auto word : words) {
-        godot::UtilityFunctions::print(word);
         if(mainDict.find(word)) { output++; }
     }
     return output;
@@ -106,7 +107,7 @@ void AugmenDict::populateDicts() {
                 break;
             default:
                 if(gLine.length() >= 9) dictLarge.push_back(gLine);
-                else godot::UtilityFunctions::print("Dict populate error char count:",gLine.length()," is not accounted for!");
+                else godot::UtilityFunctions::push_error("Dict populate error char count:",gLine.length()," is not accounted for!");
                 break;
         }
 
@@ -117,7 +118,8 @@ void AugmenDict::populateDicts() {
         
         for(int i = 0; i < gLine.length(); i++) {
             if(i != 0) {
-                if(!((util::contains(leftChars, sLine[i]) && util::contains(rightChars, sLine[i-1])) || (util::contains(rightChars, sLine[i]) && util::contains(leftChars, sLine[i-1])))) {
+                if(!((util::contains(leftChars, sLine[i]) && util::contains(rightChars, sLine[i-1]))
+                || (util::contains(rightChars, sLine[i]) && util::contains(leftChars, sLine[i-1])))) {
                          bAlternating = false;
                 }
 
