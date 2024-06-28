@@ -1,4 +1,4 @@
 /cpp/GDExtensionTemplate/*
 
-!/cpp/GDExtensionTemplate/src
-/cpp/GDExtensionTemplate/src/CMakeLists.txt
+!/cpp/GDExtensionTemplate/src/dict.cpp
+!/cpp/GDExtensionTemplate/src/dict.h
