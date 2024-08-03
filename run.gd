@@ -6,6 +6,7 @@ extends Node
 @export var feedLine_node : Label
 @export var iMaxCharCount : int = 30
 @export var iCamSpeed : int = 5
+@export var scoreUI : score_ui
 
 var bFinishedCurrentWord : bool = true :
 	set(value):
@@ -41,6 +42,8 @@ func processScore(bThrowaway : bool = false) :
 		userLine_node.calculateScore()
 	else:
 		G.addScore(userLine_node.calculateScore())
+		scoreUI.testFunc()
+		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
