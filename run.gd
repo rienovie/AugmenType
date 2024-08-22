@@ -55,7 +55,7 @@ func updateCamLoc(delta : float):
 	if(bTeleportCam):
 		
 		fCamDeltaAdd += delta
-		print(fCamDeltaAdd) #debug to see how quick the value goes up
+		# print(fCamDeltaAdd) #debug to see how quick the value goes up
 		
 		if(!bStartedDelta):
 			cam_node.position_smoothing_enabled = false
