@@ -18,7 +18,7 @@ void AugmenDict::_bind_methods() {
     BIND_ENUM_CONSTANT(RightOnly);
 
     godot::ClassDB::bind_method(godot::D_METHOD("AugTestPrint","toPrint"), &AugmenDict::testFunc);
-    
+
     godot::ClassDB::bind_method(godot::D_METHOD("isValidChar","toCheck"),&AugmenDict::isValidChar);
 
     godot::ClassDB::bind_method(godot::D_METHOD("getRandomWord"), &AugmenDict::getRandomWord);
@@ -46,7 +46,7 @@ void AugmenDict::testFunc(godot::String toPrint) {
 }
 
 bool AugmenDict::isValidChar(godot::String toCheck) {
-    return invalidChars.count(toCheck[0]);
+    return (!invalidChars.count(toCheck[0]));
 }
 
 godot::String AugmenDict::getRandomWord() {

@@ -17,7 +17,7 @@ func testFunc() -> void:
 	if !animPlayer:
 		push_error("animPlayer not set in ScoreUI!")
 		return
-	animPlayer.play("fadeIn")	
+	animPlayer.play("fadeIn")
 	print("Func called!")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

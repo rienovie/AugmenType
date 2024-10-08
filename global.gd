@@ -18,6 +18,8 @@ const bgColorMod : float = 0.5
 var scores : Array
 var errorPoints : int = 5
 var bFinCurWord : bool = true
+var bGameActive : bool = false
+var bDisableInput : bool = false
 
 func addScore(scoreToAdd : int):
 	scores.push_back(scoreToAdd)

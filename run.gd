@@ -20,6 +20,7 @@ var fCamDeltaTarget : float = 0.25
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	G.bGameActive = true
 	G.scoreTimerCalled.connect(processScore)
 	feedLine_node.text = ""
 	input_node.grab_focus()
@@ -40,16 +41,24 @@ func processScore(bThrowaway : bool = false) :
 	bTeleportCam = true
 	if(bThrowaway):
 		userLine_node.calculateScore()
+		if(feedLine_node.text[0] == " "):
+			feedLine_node.text = feedLine_node.text.substr(1)
 	else:
+		G.bGameActive = false
+		G.bDisableInput = true
 		G.addScore(userLine_node.calculateScore())
 		scoreUI.testFunc()
-		
 
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	updateCamLoc(delta)
-	if(feedLine_node.text.length() < iMaxCharCount):
-		feedWord()
+	if(G.bGameActive):
+		if(feedLine_node.text.length() < iMaxCharCount):
+			feedWord()
+	else:
+		if(feedLine_node.text.length() > 0):
+			feedLine_node.text = ""
 
 func updateCamLoc(delta : float):
 	if(bTeleportCam):
@@ -82,10 +91,13 @@ func setCurrentWordFinishedStatus():
 func _on_input_text_changed(new_text: String) -> void:
 	if(new_text.length() == 0):
 		return
-	#TODO this just removes any extra, should instead queue it
+	# TODO: this just removes any extra, should instead queue it
 	if(new_text.length() > 1):
 		new_text = new_text[0]
-	if(G.Dict.isValidChar(new_text)):
+	if(!G.Dict.isValidChar(new_text)):
+		input_node.clear()
+		return
+	if(G.bDisableInput):
 		input_node.clear()
 		return
 	if(feedLine_node.text.begins_with(new_text)):

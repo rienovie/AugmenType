@@ -9,6 +9,7 @@ extends Node
 @export var sldMaxCount : Slider
 @export var chkBxDoubles : CheckButton
 @export var comBxRestrictions : OptionButton
+@export var chkBxDisableInput : CheckButton
 @export var lblAvgValue : Label
 @export var lblLastValue : Label
 @export var pBarTimer : ProgressBar
@@ -39,6 +40,8 @@ func _ready() -> void:
 		push_error("Slider Max Count not set in HUD!")
 	if(!chkBxDoubles):
 		push_error("Check Box Doubles not set in HUD!")
+	if(!chkBxDisableInput):
+		push_error("Check Box Disable Input not set in HUD!")
 	if(!comBxRestrictions):
 		push_error("Combo Box Restrictions not set in HUD!")
 	if(!lblAvgValue):
@@ -60,6 +63,7 @@ func _ready() -> void:
 	sldMaxCount.value = G.Dict.getCurrentDictRange().y
 	comBxRestrictions.selected = G.Dict.getCurrentDictRestrict();
 	chkBxDoubles.button_pressed = G.Dict.getCurrentDictDoubles();
+	chkBxDisableInput.button_pressed = G.bDisableInput
 
 	if(comBxRestrictions.selected != 0):
 		chkBxDoubles.visible = false
@@ -166,3 +170,7 @@ func _on_com_bx_restrictions_item_selected(index:int) -> void:
 func _on_btn_default_color_pressed() -> void:
 	G.mainColor = Color(0.0,0.6,0.8,1)
 	colorPick.color = G.mainColor
+
+
+func _on_chk_bx_disable_input_toggled(toggled_on:bool) -> void:
+	G.bDisableInput = toggled_on
