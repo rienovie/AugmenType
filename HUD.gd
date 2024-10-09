@@ -17,6 +17,7 @@ extends Node
 @export var quickTimer : Timer
 @export var pBarQTimeTop : ProgressBar
 @export var pBarQTimeBottom : ProgressBar
+@export var scoreUI : score_ui
 
 var bSettingsPanelOpen : bool = false
 
@@ -58,6 +59,8 @@ func _ready() -> void:
 		push_error("pBarQTimeBottom not set in HUD!")
 	if(!pBarQTimeTop):
 		push_error("pBarQTimeTop not set in HUD!")
+	if(!scoreUI):
+		push_error("scoreUI not set in HUD!")
 
 	sldMinCount.value = G.Dict.getCurrentDictRange().x
 	sldMaxCount.value = G.Dict.getCurrentDictRange().y

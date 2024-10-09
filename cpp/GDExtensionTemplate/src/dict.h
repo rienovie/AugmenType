@@ -10,10 +10,10 @@
 #include <unordered_set>
 
 namespace godot {
-    
+
     class AugmenDict : public godot::Node {
         GDCLASS(AugmenDict, Node)
-    
+
     public:
         AugmenDict();
         ~AugmenDict();
@@ -30,7 +30,9 @@ namespace godot {
             charRestriction restriction;
             bool bOnlyDoubles;
         };
-        
+
+        godot::String sNew = "", sLastWord = "";
+
         void testFunc(godot::String toPrint);
         bool isValidChar(godot::String toCheck);
         godot::String getRandomWord();

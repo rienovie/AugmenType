@@ -5,6 +5,7 @@
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/packed_string_array.hpp>
+#include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/variant/vector2i.hpp>
 
@@ -51,7 +52,11 @@ bool AugmenDict::isValidChar(godot::String toCheck) {
 
 godot::String AugmenDict::getRandomWord() {
     if(gameDict.size() == 0) { return ""; }
-    return gameDict.at(rand() % gameDict.size() - 1);
+    do {
+    sNew = gameDict.at(rand() % gameDict.size() - 1);
+    } while (sNew == sLastWord);
+    sLastWord = sNew;
+    return sNew;
 }
 
 godot::Vector2i AugmenDict::getCurrentDictRange() {
@@ -115,7 +120,7 @@ void AugmenDict::populateDicts() {
         bLeftHand = true;
         bRightHand = true;
         bAlternating = true;
-        
+
         for(int i = 0; i < gLine.length(); i++) {
             if(i != 0) {
                 if(!((util::contains(leftChars, sLine[i]) && util::contains(rightChars, sLine[i-1]))
@@ -143,7 +148,7 @@ void AugmenDict::buildGameDict(AugmenDict::charRestriction restrict, godot::Vect
     currentDictParams.range = range;
     currentDictParams.bOnlyDoubles = onlyDoubles;
     currentDictParams.restriction = restrict;
-    
+
     godot::List<godot::String>* curDict;
 
     for (int i = range.x; i < range.y +1; i++) {
