@@ -75,7 +75,7 @@ namespace godot {
             dict7,
             dict8,
             dictLarge;
-     
+
         dictParams currentDictParams;
         std::vector<godot::String> gameDict;
 
@@ -83,7 +83,7 @@ namespace godot {
     protected:
         static void _bind_methods();
     };
-    
+
 }
 
 VARIANT_ENUM_CAST(AugmenDict::charRestriction);
